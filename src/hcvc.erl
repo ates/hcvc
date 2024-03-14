@@ -13,7 +13,7 @@ req(Method, Path, Data) ->
     case hackney:request(Method, url(Path), Headers, jsx:encode(Data), [{with_body, true}]) of
         {ok, Code, _Headers, Response} when Code =:= 200; Code =:= 204 ->
             format_response(Response);
-        {ok, Code, _Headers, Response} ->
+        {ok, _Code, _Headers, Response} ->
             {error, from_json(Response)}
     end.
 
