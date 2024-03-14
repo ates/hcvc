@@ -1,0 +1,12 @@
+{application, hcvc, [
+    {description, "HashiCorp Vault Client"},
+    {vsn, semver},
+    {applications, [
+        kernel,
+        stdlib,
+        jsx,
+        hackney,
+        credentials_obfuscation
+    ]},
+    {mod, {hcvc_app, []}}
+]}.
