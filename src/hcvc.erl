@@ -12,7 +12,11 @@ req(Method, Path, Data) ->
     Headers = [
         {<<"X-Vault-Token">>, token()}
     ],
-    case hackney:request(Method, url(Path), Headers, jsx:encode(Data), [{with_body, true}]) of
+    Options = [
+        {with_body, true},
+        {ssl_options, application:get_env(?MODULE, ssl_options, [])}
+    ],
+    case hackney:request(Method, url(Path), Headers, jsx:encode(Data), Options) of
         {ok, Code, _Headers, Response} when Code =:= 200; Code =:= 204 ->
             format_response(Response);
         {ok, _Code, _Headers, Response} ->
