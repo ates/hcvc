@@ -3,6 +3,8 @@
 -export([req/2]).
 -export([req/3]).
 
+-include_lib("kernel/include/logger.hrl").
+
 req(Method, Path) ->
     req(Method, Path, #{}).
 
@@ -30,4 +32,12 @@ format_response(Data) ->
 
 from_json(<<>>) -> #{};
 from_json(Data) ->
-    jsx:decode(Data).
+    try
+        jsx:decode(Data)
+    catch
+        _:Error:Stack ->
+            ?LOG_ERROR("hcvc: can't decode response, error: ~p, stack: ~p, data: ~p", [
+                Error, Stack, Data
+            ]),
+            {error, Error}
+    end.
