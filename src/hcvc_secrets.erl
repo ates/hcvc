@@ -12,10 +12,10 @@ enable(Name, Description) ->
         <<"type">> => <<"kv">>,
         <<"description">> => Description
     },
-    hcvc:req(post, "/v1/sys/mounts/" ++ Name, Data).
+    hcvc:req(post, ["/v1/sys/mounts", Name], Data).
 
 list() ->
-    {ok, #{<<"data">> := Data}} = hcvc:req(get, "/v1/sys/mounts"),
+    {ok, #{<<"data">> := Data}} = hcvc:req(get, ["/v1/sys/mounts"]),
     Fields = [
         <<"type">>,
         <<"accessor">>,
