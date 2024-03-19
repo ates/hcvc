@@ -20,9 +20,10 @@ req(Method, Path, Data) ->
 token() ->
     credentials_obfuscation:decrypt(persistent_term:get({hcvc, token})).
 
-url(Path) ->
+url(Path) when is_list(Path) ->
     {ok, Vault} = application:get_env(?MODULE, vault),
-    uri_string:recompose(maps:put(path, Path, uri_string:parse(Vault))).
+    NewPath = filename:join(Path),
+    uri_string:recompose(maps:put(path, NewPath, uri_string:parse(Vault))).
 
 format_response(<<>>) -> ok;
 format_response(Data) ->
