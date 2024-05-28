@@ -16,7 +16,7 @@ req(Method, Path, Data) ->
         {with_body, true},
         {ssl_options, application:get_env(?MODULE, ssl_options, [])}
     ],
-    case hackney:request(Method, url(Path), Headers, jsx:encode(Data), Options) of
+    case hackney:request(Method, url(Path), Headers, json:encode(Data), Options) of
         {ok, Code, _Headers, Response} when Code =:= 200; Code =:= 204 ->
             format_response(Response);
         {ok, _Code, _Headers, Response} ->
@@ -38,7 +38,7 @@ format_response(Data) ->
 from_json(<<>>) -> #{};
 from_json(Data) ->
     try
-        jsx:decode(Data)
+        json:decode(Data)
     catch
         _:Error:Stack ->
             ?LOG_ERROR("hcvc: can't decode response, error: ~p, stack: ~p, data: ~p", [

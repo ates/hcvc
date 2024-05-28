@@ -4,7 +4,6 @@
     {applications, [
         kernel,
         stdlib,
-        jsx,
         hackney,
         credentials_obfuscation
     ]},
